@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 
+import type { Prisma } from "@prisma/client";
 import { NextRequest } from "next/server";
 
 import { analyzeRecord } from "@/entities/analysis";
@@ -9,6 +10,9 @@ import { getCurrentUser } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 
 const FREE_LIMIT = 10;
+type RecordWithAnalysis = Prisma.RecordGetPayload<{
+  include: { analysis: true };
+}>;
 
 async function countMonthlyRecords(userId: string) {
   const monthStart = new Date();
@@ -176,7 +180,7 @@ export async function GET(req: NextRequest) {
     where: { userId: user.id },
   });
 
-  const records = await prisma.record.findMany({
+  const records: RecordWithAnalysis[] = await prisma.record.findMany({
     where: { userId: user.id },
     include: { analysis: true },
     orderBy: { createdAt: "desc" },
