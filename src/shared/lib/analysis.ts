@@ -1,8 +1,15 @@
 import { randomUUID } from "node:crypto";
 
-import type { AnalysisStatus, CognitiveErrorType } from "@prisma/client";
-
 import type { AnalysisResult, CognitiveError } from "@/entities/analysis";
+
+type AnalysisStatus = "pending" | "completed" | "failed" | "skipped";
+type CognitiveErrorType =
+  | "confirmation_bias"
+  | "availability_heuristic"
+  | "anchoring"
+  | "black_and_white_thinking"
+  | "overgeneralization"
+  | "catastrophizing";
 
 export type ApiAnalysisError = {
   type: string;
