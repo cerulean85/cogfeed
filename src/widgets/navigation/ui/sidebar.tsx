@@ -11,7 +11,6 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "홈", icon: "🏠" },
   { href: "/records", label: "기록 관리", icon: "📝" },
   { href: "/feedback", label: "피드백", icon: "💬" },
-  { href: "/settings", label: "설정", icon: "⚙️" },
 ] as const;
 
 export function Sidebar() {
