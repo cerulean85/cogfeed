@@ -52,7 +52,19 @@ export function Sidebar() {
         );
       })}
 
-      <div className="mt-auto px-3 pt-6">
+      <div className="mt-auto flex flex-col items-center gap-4 px-3 pt-6">
+        {/* 쿠팡 파트너스 배너 */}
+        <div className="overflow-hidden rounded-md border bg-white shadow-sm">
+          <iframe
+            src="https://coupa.ng/cmpW0U"
+            width="120"
+            height="240"
+            frameBorder="0"
+            scrolling="no"
+            referrerPolicy="unsafe-url"
+          ></iframe>
+        </div>
+
         <Button
           type="button"
           variant="ghost"

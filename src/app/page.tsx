@@ -43,6 +43,20 @@ export default function HomePage() {
             둘러보기 (비회원)
           </Link>
         </p>
+        {/* 쿠팡 파트너스 배너 */}
+        <div className="flex flex-col items-center gap-2 pt-8">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Sponsored</p>
+          <div className="overflow-hidden rounded-lg border bg-white shadow-md transition-transform hover:scale-[1.02]">
+            <iframe
+              src="https://coupa.ng/cmpW0U"
+              width="120"
+              height="240"
+              frameBorder="0"
+              scrolling="no"
+              referrerPolicy="unsafe-url"
+            ></iframe>
+          </div>
+        </div>
       </div>
     </main>
   );
