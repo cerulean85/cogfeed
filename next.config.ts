@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://partner.googleadservices.com",
-              "frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://coupa.ng https://*.coupang.com https://ads-partners.coupang.com",
+              "frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://coupa.ng https://*.coupang.com https://ads-partners.coupang.com https://*.coupangcdn.com",
               "img-src 'self' data: https://pagead2.googlesyndication.com",
               "connect-src 'self' https://pagead2.googlesyndication.com",
               "style-src 'self' 'unsafe-inline'",
