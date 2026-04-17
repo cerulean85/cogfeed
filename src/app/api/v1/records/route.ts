@@ -8,7 +8,6 @@ import { createMockAnalysis, mapErrorType } from "@/shared/lib/analysis";
 import { getCurrentUser } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 
-const FREE_LIMIT = 10;
 type RecordAnalysisStatus = "pending" | "completed" | "failed" | "skipped";
 
 type RecordWithAnalysis = {
@@ -20,39 +19,6 @@ type RecordWithAnalysis = {
     analyzedAt: Date | null;
   } | null;
 };
-
-async function countMonthlyRecords(userId: string) {
-  const monthStart = new Date();
-  monthStart.setUTCDate(1);
-  monthStart.setUTCHours(0, 0, 0, 0);
-
-  return prisma.record.count({
-    where: {
-      userId,
-      createdAt: {
-        gte: monthStart,
-      },
-    },
-  });
-}
-
-async function countMonthlyAnalyses(userId: string) {
-  const monthStart = new Date();
-  monthStart.setUTCDate(1);
-  monthStart.setUTCHours(0, 0, 0, 0);
-
-  return prisma.analysis.count({
-    where: {
-      status: "completed",
-      record: {
-        userId,
-        createdAt: {
-          gte: monthStart,
-        },
-      },
-    },
-  });
-}
 
 async function runAnalysis(recordId: string) {
   const record = await prisma.record.findUnique({
@@ -116,14 +82,6 @@ export async function POST(req: NextRequest) {
       return apiError(422, "CONTENT_TOO_LONG", "500자를 초과할 수 없습니다.");
     }
 
-    if (user.subscription?.tier === "free" && (await countMonthlyRecords(user.id)) >= FREE_LIMIT) {
-      return apiError(429, "QUOTA_EXCEEDED", "무료 플랜의 월 기록 한도를 초과했습니다.");
-    }
-
-    if (analyzeNow && user.subscription?.tier === "free" && (await countMonthlyAnalyses(user.id)) >= FREE_LIMIT) {
-      return apiError(429, "QUOTA_EXCEEDED", "무료 플랜의 월 분석 한도를 초과했습니다.");
-    }
-
     const created = await prisma.record.create({
       data: {
         userId: user.id,
@@ -164,15 +122,36 @@ export async function GET(req: NextRequest) {
     return apiError(401, "UNAUTHENTICATED", "로그인이 필요합니다.");
   }
 
-  const { page, limit } = parsePagination(req.nextUrl.searchParams);
-  const total = await prisma.record.count({
-    where: { userId: user.id },
-  });
+  const { searchParams } = req.nextUrl;
+
+  // ?thisMonth=true → 이번 달 기록 수만 반환
+  if (searchParams.get("thisMonth") === "true") {
+    const monthStart = new Date();
+    monthStart.setUTCDate(1);
+    monthStart.setUTCHours(0, 0, 0, 0);
+
+    const count = await prisma.record.count({
+      where: { userId: user.id, createdAt: { gte: monthStart } },
+    });
+
+    return apiSuccess({ count });
+  }
+
+  const { page, limit } = parsePagination(searchParams);
+  const search = searchParams.get("search")?.trim() || undefined;
+  const sort = searchParams.get("sort") === "asc" ? "asc" : "desc";
+
+  const where = {
+    userId: user.id,
+    ...(search ? { content: { contains: search, mode: "insensitive" as const } } : {}),
+  };
+
+  const total = await prisma.record.count({ where });
 
   const records: RecordWithAnalysis[] = await prisma.record.findMany({
-    where: { userId: user.id },
+    where,
     include: { analysis: true },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: sort },
     skip: (page - 1) * limit,
     take: limit,
   });

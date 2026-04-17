@@ -27,22 +27,15 @@ export function sanitizeUser(user: {
   id: string;
   email: string;
   onboardingCompleted: boolean;
-  subscription: {
-    tier: "free" | "premium";
-    status: "active" | "expired" | "canceled";
-  } | null;
 }): {
   userId: string;
   email: string;
   onboardingCompleted: boolean;
-  subscriptionStatus: "free" | "premium" | "expired";
 } {
   return {
     userId: user.id,
     email: user.email,
     onboardingCompleted: user.onboardingCompleted,
-    subscriptionStatus:
-      user.subscription?.status === "expired" ? "expired" : user.subscription?.tier ?? "free",
   };
 }
 
@@ -51,15 +44,6 @@ export async function createUser(email: string, password: string) {
     data: {
       email: email.toLowerCase(),
       passwordHash: await hashPassword(password),
-      subscription: {
-        create: {
-          tier: "free",
-          status: "active",
-        },
-      },
-    },
-    include: {
-      subscription: true,
     },
   });
 }
@@ -67,7 +51,6 @@ export async function createUser(email: string, password: string) {
 export async function findUserByEmail(email: string) {
   return prisma.user.findUnique({
     where: { email: email.toLowerCase() },
-    include: { subscription: true },
   });
 }
 
@@ -92,61 +75,17 @@ export async function getCurrentUser() {
 
   return prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { subscription: true },
   });
 }
 
 export async function updateUser(
   user: Pick<User, "id">,
-  patch: {
-    onboardingCompleted?: boolean;
-    subscription?: {
-      tier?: "free" | "premium";
-      status?: "active" | "expired" | "canceled";
-      currentPeriodEnd?: string | null;
-      canceledAt?: string | null;
-    };
-  }
+  patch: { onboardingCompleted?: boolean }
 ) {
   return prisma.user.update({
     where: { id: user.id },
     data: {
       onboardingCompleted: patch.onboardingCompleted,
-      subscription: patch.subscription
-        ? {
-            upsert: {
-              create: {
-                tier: patch.subscription.tier ?? "free",
-                status: patch.subscription.status ?? "active",
-                currentPeriodEnd: patch.subscription.currentPeriodEnd
-                  ? new Date(patch.subscription.currentPeriodEnd)
-                  : null,
-                canceledAt: patch.subscription.canceledAt
-                  ? new Date(patch.subscription.canceledAt)
-                  : null,
-              },
-              update: {
-                tier: patch.subscription.tier,
-                status: patch.subscription.status,
-                currentPeriodEnd:
-                  patch.subscription.currentPeriodEnd === undefined
-                    ? undefined
-                    : patch.subscription.currentPeriodEnd
-                    ? new Date(patch.subscription.currentPeriodEnd)
-                    : null,
-                canceledAt:
-                  patch.subscription.canceledAt === undefined
-                    ? undefined
-                    : patch.subscription.canceledAt
-                    ? new Date(patch.subscription.canceledAt)
-                    : null,
-              },
-            },
-          }
-        : undefined,
-    },
-    include: {
-      subscription: true,
     },
   });
 }

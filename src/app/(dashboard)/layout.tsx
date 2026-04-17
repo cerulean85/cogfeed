@@ -12,10 +12,12 @@ export default function DashboardLayout({
 
       {/* 메인 콘텐츠 */}
       <main
-        className="flex-1 px-4 py-6 md:px-8 md:py-8 pb-20 md:pb-8 max-w-4xl"
+        className="flex flex-1 justify-center px-4 py-6 pb-20 md:px-8 md:py-8 md:pb-8"
         id="main-content"
       >
-        {children}
+        <div className="w-full">
+          {children}
+        </div>
       </main>
 
       {/* 하단 탭 — 모바일 브라우저 */}

@@ -2,31 +2,14 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
+import { authConfig } from "@/auth.config";
 import { loginSchema } from "@/features/auth";
-import { AUTH_COOKIE_NAME } from "@/shared/config/auth";
 import { prisma } from "@/shared/lib/prisma";
 import { sanitizeUser, verifyPassword } from "@/shared/lib/auth";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(prisma),
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/login",
-  },
-  cookies: {
-    sessionToken: {
-      name: AUTH_COOKIE_NAME,
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
-  },
   providers: [
     Credentials({
       name: "credentials",
@@ -42,7 +25,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const user = await prisma.user.findUnique({
           where: { email: parsed.data.email.toLowerCase() },
-          include: { subscription: true },
         });
 
         if (!user?.passwordHash) {
@@ -59,7 +41,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           id: user.id,
           email: user.email,
           onboardingCompleted: safeUser.onboardingCompleted,
-          subscriptionStatus: safeUser.subscriptionStatus,
         };
       },
     }),
@@ -69,7 +50,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (user?.id) {
         token.sub = user.id;
         token.onboardingCompleted = user.onboardingCompleted ?? false;
-        token.subscriptionStatus = user.subscriptionStatus ?? "free";
       }
 
       return token;
@@ -77,10 +57,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       const userId = typeof token.sub === "string" ? token.sub : null;
       const dbUser = userId
-        ? await prisma.user.findUnique({
-            where: { id: userId },
-            include: { subscription: true },
-          })
+        ? await prisma.user.findUnique({ where: { id: userId } })
         : null;
 
       if (session.user && userId) {
@@ -89,11 +66,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.onboardingCompleted =
           dbUser?.onboardingCompleted ??
           (typeof token.onboardingCompleted === "boolean" ? token.onboardingCompleted : false);
-        session.user.subscriptionStatus =
-          dbUser?.subscription?.status === "expired"
-            ? "expired"
-            : dbUser?.subscription?.tier ??
-              ((token.subscriptionStatus as "free" | "premium" | "expired" | undefined) ?? "free");
       }
 
       return session;

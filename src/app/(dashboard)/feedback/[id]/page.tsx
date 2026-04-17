@@ -23,6 +23,8 @@ type RecordDetail = {
   updatedAt: string;
 };
 
+type CognitiveErrorSeverity = "low" | "medium" | "high";
+
 type AnalysisDetail = {
   analysisId: string;
   recordId: string;
@@ -30,11 +32,25 @@ type AnalysisDetail = {
   cognitiveErrors: Array<{
     type: string;
     label: string;
+    severity: CognitiveErrorSeverity;
     excerpt: string;
     feedback: string;
   }>;
   overallFeedback: string | null;
+  clarityScore: number | null;
   analyzedAt: string | null;
+};
+
+const severityLabel: Record<CognitiveErrorSeverity, string> = {
+  low: "낮음",
+  medium: "중간",
+  high: "높음",
+};
+
+const severityClass: Record<CognitiveErrorSeverity, string> = {
+  low: "text-blue-600 bg-blue-50",
+  medium: "text-yellow-700 bg-yellow-50",
+  high: "text-red-600 bg-red-50",
 };
 
 export default function FeedbackPage() {
@@ -109,7 +125,7 @@ export default function FeedbackPage() {
 
   if (error && !record) {
     return (
-      <div className="max-w-2xl space-y-4">
+      <div className="mx-auto max-w-2xl space-y-4">
         <h1 className="text-2xl font-bold tracking-tight">피드백</h1>
         <Card>
           <CardContent className="py-6">
@@ -128,7 +144,7 @@ export default function FeedbackPage() {
   }
 
   return (
-    <div className="max-w-2xl space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">피드백</h1>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -194,7 +210,18 @@ export default function FeedbackPage() {
                 <ul className="space-y-4">
                   {analysis.cognitiveErrors.map((item, index) => (
                     <li key={`${item.type}-${index}`} className="rounded-lg border p-4">
-                      <p className="font-medium">{item.label}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium">{item.label}</p>
+                        <span
+                          className={cn(
+                            "rounded-full px-2 py-0.5 text-xs font-medium",
+                            severityClass[item.severity]
+                          )}
+                          aria-label={`심각도: ${severityLabel[item.severity]}`}
+                        >
+                          {severityLabel[item.severity]}
+                        </span>
+                      </div>
                       <blockquote className="mt-2 border-l-2 border-muted pl-3 text-sm text-muted-foreground">
                         &quot;{item.excerpt}&quot;
                       </blockquote>
@@ -205,6 +232,34 @@ export default function FeedbackPage() {
               )}
             </CardContent>
           </Card>
+
+          {analysis.clarityScore !== null && (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">사고 명확도</CardTitle>
+                <CardDescription>0(낮음) — 100(높음)</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <p className="text-3xl font-bold" aria-label={`사고 명확도 ${analysis.clarityScore}점`}>
+                  {analysis.clarityScore}
+                  <span className="ml-1 text-base font-normal text-muted-foreground">/ 100</span>
+                </p>
+                <div
+                  role="progressbar"
+                  aria-valuenow={analysis.clarityScore}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`사고 명확도 ${analysis.clarityScore}%`}
+                  className="h-2 w-full overflow-hidden rounded-full bg-muted"
+                >
+                  <div
+                    className="h-full bg-primary transition-all"
+                    style={{ width: `${analysis.clarityScore}%` }}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {analysis.overallFeedback && (
             <Card className="border-primary/20 bg-primary/5">

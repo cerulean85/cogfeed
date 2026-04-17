@@ -51,6 +51,7 @@ export function LoginForm() {
 
   return (
     <form
+      method="post"
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       aria-label="로그인 양식"
@@ -112,6 +113,12 @@ export function LoginForm() {
       >
         {isSubmitting ? "처리 중..." : "로그인"}
       </Button>
+
+      <p className="text-center text-sm text-muted-foreground">
+        <Link href="/forgot-password" className="underline underline-offset-4 hover:text-foreground">
+          비밀번호를 잊으셨나요?
+        </Link>
+      </p>
 
       <p className="text-center text-sm text-muted-foreground">
         아직 계정이 없으신가요?{" "}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html lang="ko" className="h-full antialiased" suppressHydrationWarning>
       <head>
         <Script
           async
@@ -30,7 +31,7 @@ export default function RootLayout({
           >
             본문 바로가기
           </a>
-          {children}
+          <Providers>{children}</Providers>
         </body>
     </html>
   );

@@ -2,29 +2,9 @@ import { NextRequest } from "next/server";
 
 import { analyzeRecord } from "@/entities/analysis";
 import { apiError, apiSuccess } from "@/shared/lib/api";
-import { createMockAnalysis } from "@/shared/lib/analysis";
+import { createMockAnalysis, mapErrorType } from "@/shared/lib/analysis";
 import { getCurrentUser } from "@/shared/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
-
-function mapErrorType(type: string) {
-  switch (type) {
-    case "확증 편향":
-      return "confirmation_bias";
-    case "가용성 편향":
-      return "availability_heuristic";
-    case "앵커링 오류":
-      return "anchoring";
-    case "흑백 논리":
-      return "black_and_white_thinking";
-    case "과일반화":
-    case "과잉 일반화":
-      return "overgeneralization";
-    case "파국화":
-      return "catastrophizing";
-    default:
-      return "confirmation_bias";
-  }
-}
 
 export async function POST(
   _req: NextRequest,
@@ -71,10 +51,12 @@ export async function POST(
         status: "completed",
         overallFeedback: analysis.overall_feedback,
         analyzedAt: new Date(),
+        clarityScore: analysis.clarity_score,
         cognitiveErrors: {
           deleteMany: {},
           create: analysis.errors.map((error) => ({
             type: mapErrorType(error.type),
+            severity: error.severity,
             excerpt: error.excerpt,
             feedback: error.suggestion,
           })),

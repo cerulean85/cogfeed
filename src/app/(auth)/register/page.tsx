@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import {
   Card,
   CardContent,
@@ -6,7 +8,6 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 import { RegisterForm } from "@/features/auth";
-import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "회원가입 — CogFeed",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Home } from "lucide-react";
 
 import { parseApiResponse } from "@/shared/lib/client-api";
 import { cn } from "@/shared/lib/utils";
@@ -14,18 +15,6 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 
-type SubscriptionData = {
-  tier: "free" | "premium";
-  status: "active" | "expired" | "canceled";
-  currentPeriodEnd: string | null;
-  usage: {
-    recordsThisMonth: number;
-    recordsLimit: number | null;
-    analysisThisMonth: number;
-    analysisLimit: number | null;
-  };
-};
-
 type RecordItem = {
   recordId: string;
   content: string;
@@ -34,26 +23,25 @@ type RecordItem = {
 };
 
 export function DashboardView() {
-  const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
   const [recentRecords, setRecentRecords] = useState<RecordItem[]>([]);
+  const [monthlyRecords, setMonthlyRecords] = useState(0);
 
   useEffect(() => {
     async function load() {
       try {
-        const [subscriptionRes, recordsRes] = await Promise.all([
-          fetch("/api/v1/subscription", { cache: "no-store" }),
+        const [recordsRes, countRes] = await Promise.all([
           fetch("/api/v1/records?page=1&limit=5", { cache: "no-store" }),
+          fetch("/api/v1/records?thisMonth=true", { cache: "no-store" }),
         ]);
-
-        if (subscriptionRes.ok) {
-          setSubscription(await parseApiResponse<SubscriptionData>(subscriptionRes));
-        }
 
         if (recordsRes.ok) {
           setRecentRecords(await parseApiResponse<RecordItem[]>(recordsRes));
         }
+        if (countRes.ok) {
+          const { count } = await parseApiResponse<{ count: number }>(countRes);
+          setMonthlyRecords(count);
+        }
       } catch {
-        setSubscription(null);
         setRecentRecords([]);
       }
     }
@@ -61,14 +49,13 @@ export function DashboardView() {
     void load();
   }, []);
 
-  const monthlyRecords = subscription?.usage.recordsThisMonth ?? 0;
-  const goalTotal = subscription?.usage.recordsLimit ?? 10;
-  const goalProgress = Math.min(monthlyRecords, goalTotal);
-
   return (
-    <div className="space-y-8">
+    <div className="mx-auto max-w-2xl space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">홈</h1>
+        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+            <Home size={22} aria-hidden="true" />
+            홈
+          </h1>
         <Link href="/records/new" className={cn(buttonVariants({ size: "sm" }))} aria-label="새 기록 작성">
           + 기록 추가
         </Link>
@@ -91,30 +78,12 @@ export function DashboardView() {
 
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>월 목표 달성률</CardDescription>
-              <CardTitle
-                className="text-3xl"
-                aria-label={`목표 ${goalTotal}건 중 ${goalProgress}건 완료`}
-              >
-                {goalProgress}
-                <span className="ml-1 text-base font-normal text-muted-foreground">/ {goalTotal}건</span>
+              <CardDescription>이번 달 기록 수</CardDescription>
+              <CardTitle className="text-3xl" aria-label={`이번 달 ${monthlyRecords}건 기록`}>
+                {monthlyRecords}
+                <span className="ml-1 text-base font-normal text-muted-foreground">건</span>
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div
-                role="progressbar"
-                aria-valuenow={goalProgress}
-                aria-valuemin={0}
-                aria-valuemax={goalTotal}
-                aria-label={`목표 달성률 ${Math.round((goalProgress / goalTotal) * 100)}%`}
-                className="h-2 w-full overflow-hidden rounded-full bg-muted"
-              >
-                <div
-                  className="h-full bg-primary transition-all"
-                  style={{ width: `${Math.round((goalProgress / goalTotal) * 100)}%` }}
-                />
-              </div>
-            </CardContent>
           </Card>
         </div>
       </section>
