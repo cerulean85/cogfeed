@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-import { Home, BookOpen, Sparkles, LogOut, Brain, Sun, Moon } from "lucide-react";
+import { Home, BookOpen, Sparkles, LogOut, Brain, Sun, Moon, Mail, Settings } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
@@ -25,6 +25,8 @@ const NAV_ITEMS = [
   { href: "/dashboard", label: "홈", icon: Home },
   { href: "/records", label: "기록 관리", icon: BookOpen },
   { href: "/feedback", label: "피드백", icon: Sparkles },
+  { href: "/contact", label: "문의하기", icon: Mail },
+  { href: "/settings", label: "계정 설정", icon: Settings },
 ] as const;
 
 export function Sidebar() {

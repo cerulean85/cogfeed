@@ -19,6 +19,7 @@ export function RegisterForm() {
   const searchParams = useSearchParams();
   const [serverError, setServerError] = useState<string | null>(null);
   const callbackUrl = searchParams.get("callbackUrl");
+  const marketingConsent = searchParams.get("marketing") === "1";
 
   const {
     register,
@@ -40,6 +41,7 @@ export function RegisterForm() {
           password: values.password,
           passwordConfirm: values.passwordConfirm,
           agreedToTerms: true,
+          marketingConsent,
         }),
       });
       await parseApiResponse(res);

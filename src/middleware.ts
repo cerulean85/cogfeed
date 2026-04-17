@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { AUTH_COOKIE_NAME } from "@/shared/config/auth";
 
-const PUBLIC_PATHS = ["/login", "/register", "/register/terms", "/onboarding", "/forgot-password", "/reset-password"];
+const PUBLIC_PATHS = ["/login", "/register", "/register/terms", "/onboarding", "/forgot-password", "/reset-password", "/terms"];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

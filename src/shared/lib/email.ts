@@ -5,6 +5,26 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = process.env.RESEND_FROM_EMAIL ?? "CogFeed <noreply@cogfeed.app>";
 const BASE_URL = process.env.NEXTAUTH_URL ?? process.env.AUTH_URL ?? "http://localhost:3000";
 
+export async function sendContactEmail(name: string, email: string, message: string) {
+  await resend.emails.send({
+    from: FROM,
+    to: "zhwan85@dycdyp.com",
+    replyTo: email,
+    subject: `[CogFeed 문의] ${name}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px; color: #111;">
+        <h2 style="margin: 0 0 16px; font-size: 20px;">새 문의가 도착했습니다</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+          <tr><td style="padding: 8px 0; color: #555; width: 80px;">이름</td><td style="padding: 8px 0;">${name}</td></tr>
+          <tr><td style="padding: 8px 0; color: #555;">이메일</td><td style="padding: 8px 0;">${email}</td></tr>
+        </table>
+        <hr style="margin: 16px 0; border: none; border-top: 1px solid #eee;" />
+        <p style="font-size: 14px; line-height: 1.7; white-space: pre-wrap;">${message}</p>
+      </div>
+    `,
+  });
+}
+
 export async function sendPasswordResetEmail(email: string, token: string) {
   const resetUrl = `${BASE_URL}/reset-password?token=${token}`;
 

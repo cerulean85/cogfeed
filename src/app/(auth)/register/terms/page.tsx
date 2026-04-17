@@ -61,7 +61,11 @@ export default function TermsPage() {
   function handleContinue() {
     setTouched(true);
     if (!allRequired) return;
-    router.push(callbackUrl ? `/register?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/register");
+    const marketing = checked["terms-marketing"] ? "1" : "0";
+    const base = callbackUrl
+      ? `/register?callbackUrl=${encodeURIComponent(callbackUrl)}&marketing=${marketing}`
+      : `/register?marketing=${marketing}`;
+    router.push(base);
   }
 
   return (

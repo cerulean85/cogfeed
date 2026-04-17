@@ -39,11 +39,12 @@ export function sanitizeUser(user: {
   };
 }
 
-export async function createUser(email: string, password: string) {
+export async function createUser(email: string, password: string, marketingConsent = false) {
   return prisma.user.create({
     data: {
       email: email.toLowerCase(),
       passwordHash: await hashPassword(password),
+      marketingConsent,
     },
   });
 }

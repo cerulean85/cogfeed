@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Brain } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
 
@@ -8,7 +9,12 @@ export default function HomePage() {
       <div className="w-full max-w-md space-y-8 text-center">
         {/* 서비스 브랜드 */}
         <div className="space-y-3">
-          <h1 className="text-4xl font-bold tracking-tight">CogFeed</h1>
+          <h1 className="flex items-center justify-center gap-3 text-4xl font-bold tracking-tight">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-500">
+              <Brain size={22} aria-hidden="true" />
+            </span>
+            CogFeed
+          </h1>
           <p className="text-muted-foreground text-lg leading-relaxed">
             AI가 당신의 기록을 분석해
             <br />

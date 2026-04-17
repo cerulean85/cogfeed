@@ -274,6 +274,10 @@ export default function FeedbackPage() {
         </>
       )}
 
+      <p className="text-xs text-muted-foreground rounded-md border px-4 py-3 leading-relaxed">
+        AI 분석 결과는 참고 목적의 정보이며, 전문적인 심리 상담이나 의료 진단을 대체하지 않습니다.
+      </p>
+
       <div className="flex gap-3 pt-2">
         <Link
           href="/records/new"
