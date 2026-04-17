@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { Providers } from "./providers";
@@ -55,14 +54,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
-      <head>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2703512740946569"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-      </head>
+
       <body className="min-h-full flex flex-col">
           {/* 접근성: 키보드 사용자를 위한 본문 바로가기 */}
           <a
