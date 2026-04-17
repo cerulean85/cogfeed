@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { MobileNav, Sidebar } from "@/widgets/navigation";
 import { Footer } from "@/shared/ui/footer";
 import { PreferencesSync } from "@/shared/ui/preferences-sync";
 import { getCurrentUser } from "@/shared/lib/auth";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardLayout({
   children,

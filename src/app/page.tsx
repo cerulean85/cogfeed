@@ -1,22 +1,58 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Brain } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, getLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
 import { Footer } from "@/shared/ui/footer";
 import { LocaleSwitcher } from "@/shared/ui/locale-switcher";
+import { siteMeta } from "@/shared/config/site";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const meta = locale === "en" ? siteMeta.en : siteMeta.ko;
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      title: meta.title,
+      description: meta.description,
+      url: siteMeta.url,
+      locale: locale === "en" ? "en_US" : "ko_KR",
+    },
+    twitter: {
+      title: meta.title,
+      description: meta.description,
+    },
+  };
+}
 
 export default async function HomePage() {
   const session = await auth();
   if (session) redirect("/dashboard");
+
+  const locale = await getLocale();
+  const meta = locale === "en" ? siteMeta.en : siteMeta.ko;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: siteMeta.name,
+    url: siteMeta.url,
+    description: meta.description,
+    applicationCategory: "HealthApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+    inLanguage: ["ko", "en"],
+  };
 
   const t = await getTranslations("landing");
   const ta = await getTranslations("auth");
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="fixed top-4 right-4">
         <LocaleSwitcher />
       </div>

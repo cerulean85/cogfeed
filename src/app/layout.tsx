@@ -3,11 +3,43 @@ import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { Providers } from "./providers";
+import { siteMeta } from "@/shared/config/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CogFeed — 인지 오류 피드백 서비스",
-  description: "AI가 당신의 기록을 분석해 인지 오류를 진단하고 개인화 피드백을 제공합니다.",
+  metadataBase: new URL(siteMeta.url),
+  title: {
+    default: siteMeta.ko.title,
+    template: `%s — CogFeed`,
+  },
+  description: siteMeta.ko.description,
+  keywords: ["인지 오류", "AI 피드백", "사고 분석", "cognitive bias", "AI feedback", "CogFeed"],
+  authors: [{ name: "CogFeed" }],
+  openGraph: {
+    type: "website",
+    siteName: siteMeta.name,
+    title: siteMeta.ko.title,
+    description: siteMeta.ko.description,
+    url: siteMeta.url,
+    locale: "ko_KR",
+    alternateLocale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMeta.ko.title,
+    description: siteMeta.ko.description,
+  },
+  alternates: {
+    canonical: siteMeta.url,
+    languages: {
+      "ko": siteMeta.url,
+      "en": siteMeta.url,
+    },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({
