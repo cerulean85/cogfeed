@@ -9,6 +9,17 @@ import { Home, BookOpen, Sparkles, LogOut, Brain, Sun, Moon } from "lucide-react
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/shared/ui/alert-dialog";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "홈", icon: Home },
@@ -51,16 +62,35 @@ export function Sidebar() {
         <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground" title={email}>
           {email}
         </span>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="h-7 w-7 shrink-0"
-          onClick={() => signOut({ callbackUrl: "/login" })}
-          aria-label="로그아웃"
-        >
-          <LogOut size={14} aria-hidden="true" />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger
+            render={
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 shrink-0"
+                aria-label="로그아웃"
+              >
+                <LogOut size={14} aria-hidden="true" />
+              </Button>
+            }
+          />
+          <AlertDialogContent size="sm">
+            <AlertDialogHeader>
+              <AlertDialogTitle>로그아웃</AlertDialogTitle>
+              <AlertDialogDescription>
+                정말 로그아웃 하시겠어요?
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>취소</AlertDialogCancel>
+              <AlertDialogAction onClick={() => signOut({ callbackUrl: "/login" })}>
+                로그아웃
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
 
       {/* 네비게이션 */}
@@ -106,13 +136,14 @@ export function Sidebar() {
       <div className="px-3 pt-2">
         <div className="w-full overflow-hidden rounded-md border bg-white shadow-sm">
           <iframe
-            src="https://coupa.ng/cmpW0U"
-            width="200"
+            src="https://coupa.ng/cmrXfF"
+            width="120"
             height="240"
             frameBorder="0"
             scrolling="no"
             referrerPolicy="unsafe-url"
             style={{ display: "block", width: "100%" }}
+            {...{ browsingtopics: "" }}
           />
         </div>
       </div>

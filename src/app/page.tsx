@@ -47,13 +47,14 @@ export default function HomePage() {
         <div className="mt-8 flex flex-col items-center">
           <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
             <iframe
-              src="https://coupa.ng/cmpW0U"
-              width="200"
+              src="https://coupa.ng/cmrXfF"
+              width="120"
               height="240"
               frameBorder="0"
               scrolling="no"
               referrerPolicy="unsafe-url"
               style={{ display: "block" }}
+              {...{ browsingtopics: "" }}
             />
           </div>
         </div>
