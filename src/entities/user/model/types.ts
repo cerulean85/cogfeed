@@ -3,6 +3,8 @@ export type User = {
   email: string;
   passwordHash: string;
   onboardingCompleted: boolean;
+  theme: string;
+  locale: string;
   createdAt: string;
   updatedAt: string;
 };

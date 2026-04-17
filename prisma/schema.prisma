@@ -97,6 +97,12 @@ model Analysis {
   cognitiveErrors CognitiveError[]
 }
 
+model SiteConfig {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
 model CognitiveError {
   id         String                  @id @default(uuid())
   analysisId String

@@ -3,6 +3,7 @@ import { MobileNav, Sidebar } from "@/widgets/navigation";
 import { Footer } from "@/shared/ui/footer";
 import { PreferencesSync } from "@/shared/ui/preferences-sync";
 import { getCurrentUser } from "@/shared/lib/auth";
+import { getSiteConfig } from "@/shared/lib/site-config";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -13,15 +14,19 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
-  const dbTheme = user?.theme ?? "system";
-  const dbLocale = user?.locale ?? "ko";
+  const [user, coupangSrc] = await Promise.all([
+    getCurrentUser(),
+    getSiteConfig("coupang_iframe_src_1"),
+  ]);
+  const dbTheme = (user as { theme?: string } | null)?.theme ?? "system";
+  const dbLocale = (user as { locale?: string } | null)?.locale ?? "ko";
+  const safeCoupangSrc = coupangSrc ?? "https://coupa.ng/cmr66l";
 
   return (
     <div className="flex min-h-screen">
       <PreferencesSync theme={dbTheme} locale={dbLocale} />
       {/* 사이드바 — 데스크톱 */}
-      <Sidebar />
+      <Sidebar coupangSrc={safeCoupangSrc} />
 
       {/* 메인 콘텐츠 */}
       <main

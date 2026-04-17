@@ -9,6 +9,7 @@ import { buttonVariants } from "@/shared/ui/button";
 import { Footer } from "@/shared/ui/footer";
 import { LocaleSwitcher } from "@/shared/ui/locale-switcher";
 import { siteMeta } from "@/shared/config/site";
+import { getSiteConfig } from "@/shared/lib/site-config";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -47,6 +48,7 @@ export default async function HomePage() {
     inLanguage: ["ko", "en"],
   };
 
+  const coupangSrc = await getSiteConfig("coupang_iframe_src_3") ?? "https://coupa.ng/cmr69p";
   const t = await getTranslations("landing");
   const ta = await getTranslations("auth");
 
@@ -88,7 +90,7 @@ export default async function HomePage() {
         <div className="mt-8 flex flex-col items-center">
           <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
             <iframe
-              src="https://coupa.ng/cmr69p"
+              src={coupangSrc}
               width="200"
               height="240"
               referrerPolicy="unsafe-url"

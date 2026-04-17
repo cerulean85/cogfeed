@@ -21,7 +21,7 @@ import {
   AlertDialogTrigger,
 } from "@/shared/ui/alert-dialog";
 
-export function Sidebar() {
+export function Sidebar({ coupangSrc }: { coupangSrc: string }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const t = useTranslations("nav");
@@ -129,7 +129,7 @@ export function Sidebar() {
       <div className="px-3 pt-2">
         <div className="w-full overflow-hidden rounded-md border bg-white shadow-sm">
           <iframe
-            src="https://coupa.ng/cmr66l"
+            src={coupangSrc}
             width="200"
             height="240"
             referrerPolicy="unsafe-url"

@@ -5,6 +5,7 @@ import { Brain } from "lucide-react";
 import { auth } from "@/auth";
 import { Footer } from "@/shared/ui/footer";
 import { LocaleSwitcher } from "@/shared/ui/locale-switcher";
+import { getSiteConfig } from "@/shared/lib/site-config";
 
 export default async function AuthLayout({
   children,
@@ -12,10 +13,9 @@ export default async function AuthLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
+  if (session) redirect("/dashboard");
 
-  if (session) {
-    redirect("/dashboard");
-  }
+  const coupangSrc = await getSiteConfig("coupang_iframe_src_2") ?? "https://coupa.ng/cmr68w";
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
@@ -41,7 +41,7 @@ export default async function AuthLayout({
       <div className="mt-8 flex flex-col items-center">
         <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
           <iframe
-            src="https://coupa.ng/cmr68w"
+            src={coupangSrc}
             width="200"
             height="240"
             frameBorder="0"
