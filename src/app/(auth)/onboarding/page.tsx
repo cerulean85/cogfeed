@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { parseApiResponse } from "@/shared/lib/client-api";
+import { safeCallbackUrl } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 
@@ -12,7 +13,7 @@ export default function OnboardingPage() {
   const searchParams = useSearchParams();
   const t = useTranslations("onboarding");
   const [currentStep, setCurrentStep] = useState(0);
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
 
   const STEPS = [
     { emoji: "✍️", titleKey: "step1Title" as const, descKey: "step1Desc" as const },

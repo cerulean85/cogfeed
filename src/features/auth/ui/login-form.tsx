@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
 import { loginSchema, type LoginFormValues } from "@/features/auth/model/validations";
+import { safeCallbackUrl } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
@@ -19,7 +20,7 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [serverError, setServerError] = useState<string | null>(null);
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
   const t = useTranslations("auth");
   const tc = useTranslations("common");
 

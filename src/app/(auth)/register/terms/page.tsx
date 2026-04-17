@@ -11,6 +11,7 @@ import { Label } from "@/shared/ui/label";
 import { Separator } from "@/shared/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose, DialogBody } from "@/shared/ui/dialog";
+import { safeCallbackUrl } from "@/shared/lib/utils";
 import { TermsServiceKo, TermsServiceEn, PrivacyKo, PrivacyEn } from "@/shared/ui/terms-content";
 
 export default function TermsPage() {
@@ -20,7 +21,7 @@ export default function TermsPage() {
   const tc = useTranslations("common");
   const [checked, setChecked] = useState({ "terms-service": false, "terms-privacy": false, "terms-marketing": false });
   const [touched, setTouched] = useState(false);
-  const callbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"), "");
   const locale = useLocale();
 
   const TERMS_ITEMS = [

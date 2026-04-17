@@ -1,5 +1,3 @@
-import { createHash } from "node:crypto";
-
 import bcrypt from "bcryptjs";
 
 import { auth } from "@/auth";
@@ -7,20 +5,12 @@ import type { Session, User } from "@/entities/user";
 import { AUTH_COOKIE_NAME } from "@/shared/config/auth";
 import { prisma } from "@/shared/lib/prisma";
 
-function hashPasswordLegacy(password: string) {
-  return createHash("sha256").update(password).digest("hex");
-}
-
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
 }
 
 export async function verifyPassword(password: string, passwordHash: string) {
-  if (passwordHash.startsWith("$2")) {
-    return bcrypt.compare(password, passwordHash);
-  }
-
-  return hashPasswordLegacy(password) === passwordHash;
+  return bcrypt.compare(password, passwordHash);
 }
 
 export function sanitizeUser(user: {
