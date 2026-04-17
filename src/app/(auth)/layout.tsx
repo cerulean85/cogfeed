@@ -35,7 +35,7 @@ export default async function AuthLayout({
         <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
           <iframe
             src="https://coupa.ng/cmrXfF"
-            width="120"
+            width="200"
             height="240"
             frameBorder="0"
             scrolling="no"

@@ -137,7 +137,7 @@ export function Sidebar() {
         <div className="w-full overflow-hidden rounded-md border bg-white shadow-sm">
           <iframe
             src="https://coupa.ng/cmrXfF"
-            width="120"
+            width="200"
             height="240"
             frameBorder="0"
             scrolling="no"
