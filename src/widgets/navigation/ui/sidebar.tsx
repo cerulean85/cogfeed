@@ -143,7 +143,6 @@ export function Sidebar() {
             scrolling="no"
             referrerPolicy="unsafe-url"
             style={{ display: "block", width: "100%" }}
-            {...{ browsingtopics: "" }}
           />
         </div>
       </div>

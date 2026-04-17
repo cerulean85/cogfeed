@@ -41,7 +41,6 @@ export default async function AuthLayout({
             scrolling="no"
             referrerPolicy="unsafe-url"
             style={{ display: "block" }}
-            {...{ browsingtopics: "" }}
           />
         </div>
       </div>
