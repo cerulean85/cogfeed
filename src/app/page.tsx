@@ -2,10 +2,11 @@ import Link from "next/link";
 import { Brain } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
+import { Footer } from "@/shared/ui/footer";
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
       <div className="w-full max-w-md space-y-8 text-center">
         {/* 서비스 브랜드 */}
         <div className="space-y-3">
@@ -64,6 +65,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

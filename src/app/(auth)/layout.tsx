@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Brain } from "lucide-react";
 
 import { auth } from "@/auth";
+import { Footer } from "@/shared/ui/footer";
 
 export default async function AuthLayout({
   children,
@@ -44,6 +45,8 @@ export default async function AuthLayout({
           />
         </div>
       </div>
+
+      <Footer className="mt-8" />
     </div>
   );
 }

@@ -8,8 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
+import { PasswordInput } from "@/shared/ui/password-input";
 import {
   Card,
   CardContent,
@@ -113,9 +113,8 @@ export default function ResetPasswordPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="password">새 비밀번호</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 autoComplete="new-password"
                 placeholder="8자 이상 입력"
                 aria-required="true"
@@ -132,9 +131,8 @@ export default function ResetPasswordPage() {
 
             <div className="space-y-1.5">
               <Label htmlFor="passwordConfirm">새 비밀번호 확인</Label>
-              <Input
+              <PasswordInput
                 id="passwordConfirm"
-                type="password"
                 autoComplete="new-password"
                 placeholder="비밀번호를 다시 입력"
                 aria-required="true"

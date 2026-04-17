@@ -10,8 +10,8 @@ import { z } from "zod";
 import { Settings } from "lucide-react";
 
 import { Button } from "@/shared/ui/button";
-import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
+import { PasswordInput } from "@/shared/ui/password-input";
 import { Separator } from "@/shared/ui/separator";
 import {
   AlertDialog,
@@ -116,19 +116,19 @@ export default function SettingsPage() {
 
           <div className="space-y-1.5">
             <Label htmlFor="currentPassword">현재 비밀번호</Label>
-            <Input id="currentPassword" type="password" aria-invalid={!!errors.currentPassword} {...register("currentPassword")} />
+            <PasswordInput id="currentPassword" aria-invalid={!!errors.currentPassword} {...register("currentPassword")} />
             {errors.currentPassword && <p role="alert" className="text-sm text-destructive">{errors.currentPassword.message}</p>}
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="newPassword">새 비밀번호</Label>
-            <Input id="newPassword" type="password" aria-invalid={!!errors.newPassword} {...register("newPassword")} />
+            <PasswordInput id="newPassword" aria-invalid={!!errors.newPassword} {...register("newPassword")} />
             {errors.newPassword && <p role="alert" className="text-sm text-destructive">{errors.newPassword.message}</p>}
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="confirmPassword">새 비밀번호 확인</Label>
-            <Input id="confirmPassword" type="password" aria-invalid={!!errors.confirmPassword} {...register("confirmPassword")} />
+            <PasswordInput id="confirmPassword" aria-invalid={!!errors.confirmPassword} {...register("confirmPassword")} />
             {errors.confirmPassword && <p role="alert" className="text-sm text-destructive">{errors.confirmPassword.message}</p>}
           </div>
 

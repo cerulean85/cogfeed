@@ -12,6 +12,7 @@ import { loginSchema, type LoginFormValues } from "@/features/auth/model/validat
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
+import { PasswordInput } from "@/shared/ui/password-input";
 
 export function LoginForm() {
   const router = useRouter();
@@ -87,9 +88,8 @@ export function LoginForm() {
 
       <div className="space-y-1.5">
         <Label htmlFor="password">비밀번호</Label>
-        <Input
+        <PasswordInput
           id="password"
-          type="password"
           autoComplete="current-password"
           placeholder="비밀번호 입력"
           aria-required="true"

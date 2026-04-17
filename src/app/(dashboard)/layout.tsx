@@ -1,4 +1,5 @@
 import { MobileNav, Sidebar } from "@/widgets/navigation";
+import { Footer } from "@/shared/ui/footer";
 
 export default function DashboardLayout({
   children,
@@ -12,12 +13,13 @@ export default function DashboardLayout({
 
       {/* 메인 콘텐츠 */}
       <main
-        className="flex flex-1 justify-center px-4 py-6 pb-20 md:px-8 md:py-8 md:pb-8"
+        className="flex flex-1 flex-col justify-between px-4 py-6 pb-20 md:px-8 md:py-8 md:pb-8"
         id="main-content"
       >
         <div className="w-full">
           {children}
         </div>
+        <Footer className="mt-12" />
       </main>
 
       {/* 하단 탭 — 모바일 브라우저 */}
