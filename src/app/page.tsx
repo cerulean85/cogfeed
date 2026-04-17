@@ -44,17 +44,17 @@ export default function HomePage() {
           </Link>
         </p>
         {/* 쿠팡 파트너스 배너 */}
-        <div className="flex flex-col items-center gap-2 pt-8">
-          <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Sponsored</p>
-          <div className="overflow-hidden rounded-lg border bg-white shadow-md transition-transform hover:scale-[1.02]">
+        <div className="mt-8 flex flex-col items-center">
+          <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
             <iframe
               src="https://coupa.ng/cmpW0U"
-              width="120"
+              width="200"
               height="240"
               frameBorder="0"
               scrolling="no"
               referrerPolicy="unsafe-url"
-            ></iframe>
+              style={{ display: "block" }}
+            />
           </div>
         </div>
       </div>
