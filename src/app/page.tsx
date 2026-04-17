@@ -84,12 +84,11 @@ export default async function HomePage() {
             {ta("loginButton")}
           </Link>
         </div>
-
         {/* 쿠팡 파트너스 배너 */}
         <div className="mt-8 flex flex-col items-center">
           <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
             <iframe
-              src="https://coupa.ng/cmrXfF"
+              src="https://coupa.ng/cmr69p"
               width="200"
               height="240"
               referrerPolicy="unsafe-url"

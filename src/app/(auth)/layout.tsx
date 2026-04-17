@@ -41,7 +41,7 @@ export default async function AuthLayout({
       <div className="mt-8 flex flex-col items-center">
         <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
           <iframe
-            src="https://coupa.ng/cmrXfF"
+            src="https://coupa.ng/cmr68w"
             width="200"
             height="240"
             frameBorder="0"
