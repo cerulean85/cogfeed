@@ -4,6 +4,7 @@ import { Brain } from "lucide-react";
 
 import { auth } from "@/auth";
 import { Footer } from "@/shared/ui/footer";
+import { LocaleSwitcher } from "@/shared/ui/locale-switcher";
 
 export default async function AuthLayout({
   children,
@@ -18,6 +19,11 @@ export default async function AuthLayout({
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+      {/* 언어 전환 — 우상단 고정 */}
+      <div className="fixed top-4 right-4">
+        <LocaleSwitcher />
+      </div>
+
       {/* 브랜드 로고 — 항상 접근 가능 */}
       <Link
         href="/"

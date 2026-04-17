@@ -61,6 +61,8 @@ model User {
   passwordHash        String?
   onboardingCompleted Boolean   @default(false)
   marketingConsent    Boolean   @default(false)
+  theme               String    @default("system")
+  locale              String    @default("ko")
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 

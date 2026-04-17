@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useTranslations } from "next-intl";
 
 import { loginSchema, type LoginFormValues } from "@/features/auth/model/validations";
 import { Button } from "@/shared/ui/button";
@@ -19,18 +20,17 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const [serverError, setServerError] = useState<string | null>(null);
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
+  const t = useTranslations("auth");
+  const tc = useTranslations("common");
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-  });
+  } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
 
   async function onSubmit(values: LoginFormValues) {
     setServerError(null);
-
     try {
       const result = await signIn("credentials", {
         email: values.email,
@@ -38,37 +38,26 @@ export function LoginForm() {
         redirect: false,
         callbackUrl,
       });
-
       if (result?.error) {
-        setServerError("이메일 또는 비밀번호가 올바르지 않습니다.");
+        setServerError(t("loginError"));
         return;
       }
-
       router.push(result?.url ?? callbackUrl);
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : "로그인 처리 중 오류가 발생했습니다.");
+      setServerError(error instanceof Error ? error.message : t("networkError"));
     }
   }
 
   return (
-    <form
-      method="post"
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      aria-label="로그인 양식"
-      className="space-y-5"
-    >
+    <form method="post" onSubmit={handleSubmit(onSubmit)} noValidate aria-label="로그인 양식" className="space-y-5">
       {serverError && (
-        <div
-          role="alert"
-          className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
-        >
+        <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {serverError}
         </div>
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email">이메일</Label>
+        <Label htmlFor="email">{tc("email")}</Label>
         <Input
           id="email"
           type="email"
@@ -79,15 +68,11 @@ export function LoginForm() {
           aria-invalid={!!errors.email}
           {...register("email")}
         />
-        {errors.email && (
-          <p id="email-error" role="alert" className="text-sm text-destructive">
-            {errors.email.message}
-          </p>
-        )}
+        {errors.email && <p id="email-error" role="alert" className="text-sm text-destructive">{errors.email.message}</p>}
       </div>
 
       <div className="space-y-1.5">
-        <Label htmlFor="password">비밀번호</Label>
+        <Label htmlFor="password">{tc("password")}</Label>
         <PasswordInput
           id="password"
           autoComplete="current-password"
@@ -97,36 +82,26 @@ export function LoginForm() {
           aria-invalid={!!errors.password}
           {...register("password")}
         />
-        {errors.password && (
-          <p id="password-error" role="alert" className="text-sm text-destructive">
-            {errors.password.message}
-          </p>
-        )}
+        {errors.password && <p id="password-error" role="alert" className="text-sm text-destructive">{errors.password.message}</p>}
       </div>
 
-      <Button
-        type="submit"
-        className="w-full"
-        size="lg"
-        disabled={isSubmitting}
-        aria-label={isSubmitting ? "로그인 처리 중..." : "로그인"}
-      >
-        {isSubmitting ? "처리 중..." : "로그인"}
+      <Button type="submit" className="w-full" size="lg" disabled={isSubmitting} aria-label={isSubmitting ? tc("processing") : t("loginButton")}>
+        {isSubmitting ? tc("processing") : t("loginButton")}
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
         <Link href="/forgot-password" className="underline underline-offset-4 hover:text-foreground">
-          비밀번호를 잊으셨나요?
+          {t("forgotPassword")}
         </Link>
       </p>
 
       <p className="text-center text-sm text-muted-foreground">
-        아직 계정이 없으신가요?{" "}
+        {t("noAccount")}{" "}
         <Link
           href={callbackUrl !== "/dashboard" ? `/register/terms?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/register/terms"}
           className="underline underline-offset-4 hover:text-foreground"
         >
-          회원가입
+          {t("signUpLink")}
         </Link>
       </p>
     </form>

@@ -1,12 +1,25 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Brain } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { auth } from "@/auth";
 import { cn } from "@/shared/lib/utils";
 import { buttonVariants } from "@/shared/ui/button";
 import { Footer } from "@/shared/ui/footer";
+import { LocaleSwitcher } from "@/shared/ui/locale-switcher";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await auth();
+  if (session) redirect("/dashboard");
+
+  const t = await getTranslations("landing");
+  const ta = await getTranslations("auth");
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
+      <div className="fixed top-4 right-4">
+        <LocaleSwitcher />
+      </div>
       <div className="w-full max-w-md space-y-8 text-center">
         {/* 서비스 브랜드 */}
         <div className="space-y-3">
@@ -16,40 +29,26 @@ export default function HomePage() {
             </span>
             CogFeed
           </h1>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            AI가 당신의 기록을 분석해
-            <br />
-            인지 오류를 진단하고 개인화 피드백을 제공합니다.
+          <p className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">
+            {t("tagline")}
           </p>
         </div>
 
-        {/* CTA 영역 — 회원가입이 primary CTA */}
         <div className="flex flex-col gap-3">
           <Link
             href="/register/terms"
             className={cn(buttonVariants({ size: "lg" }), "w-full justify-center")}
-            aria-label="회원가입 페이지로 이동"
           >
-            회원가입
+            {t("signUp")}
           </Link>
           <Link
             href="/login"
             className={cn(buttonVariants({ variant: "outline", size: "lg" }), "w-full justify-center")}
-            aria-label="로그인 페이지로 이동"
           >
-            로그인
+            {ta("loginButton")}
           </Link>
         </div>
 
-        {/* 비회원 탐색 — AC: "둘러보기" 버튼 제공 */}
-        <p className="text-sm text-muted-foreground">
-          <Link
-            href="/dashboard"
-            className="underline underline-offset-4 hover:text-foreground transition-colors"
-          >
-            둘러보기 (비회원)
-          </Link>
-        </p>
         {/* 쿠팡 파트너스 배너 */}
         <div className="mt-8 flex flex-col items-center">
           <div className="overflow-hidden rounded-lg border bg-white shadow-sm">
@@ -57,10 +56,8 @@ export default function HomePage() {
               src="https://coupa.ng/cmrXfF"
               width="200"
               height="240"
-              frameBorder="0"
-              scrolling="no"
               referrerPolicy="unsafe-url"
-              style={{ display: "block" }}
+              style={{ display: "block", border: 0, overflow: "hidden" }}
             />
           </div>
         </div>

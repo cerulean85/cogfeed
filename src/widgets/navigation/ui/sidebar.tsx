@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { useTheme } from "next-themes";
-import { Home, BookOpen, Sparkles, LogOut, Brain, Sun, Moon, Mail, Settings } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Home, BookOpen, Sparkles, LogOut, Brain, Mail, Settings } from "lucide-react";
 
 import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
@@ -21,20 +21,44 @@ import {
   AlertDialogTrigger,
 } from "@/shared/ui/alert-dialog";
 
-const NAV_ITEMS = [
-  { href: "/dashboard", label: "홈", icon: Home },
-  { href: "/records", label: "기록 관리", icon: BookOpen },
-  { href: "/feedback", label: "피드백", icon: Sparkles },
-  { href: "/contact", label: "문의하기", icon: Mail },
-  { href: "/settings", label: "계정 설정", icon: Settings },
-] as const;
-
 export function Sidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
-  const { theme, setTheme } = useTheme();
+  const t = useTranslations("nav");
+  const tc = useTranslations("common");
   const email = session?.user?.email ?? "";
   const initial = email.charAt(0).toUpperCase();
+
+  const MAIN_ITEMS = [
+    { href: "/dashboard", label: t("home"), icon: Home },
+    { href: "/records", label: t("records"), icon: BookOpen },
+    { href: "/feedback", label: t("feedback"), icon: Sparkles },
+  ] as const;
+
+  const SUB_ITEMS = [
+    { href: "/settings", label: t("settings"), icon: Settings },
+    { href: "/contact", label: t("contact"), icon: Mail },
+  ] as const;
+
+  function NavLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ElementType }) {
+    const isActive = href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(href);
+    return (
+      <Link
+        href={href}
+        aria-label={label}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
+          isActive
+            ? "bg-sidebar-accent text-sidebar-accent-foreground"
+            : "text-sidebar-foreground hover:bg-sidebar-accent/60"
+        )}
+      >
+        <Icon size={18} aria-hidden="true" />
+        {label}
+      </Link>
+    );
+  }
 
   return (
     <nav
@@ -72,7 +96,7 @@ export function Sidebar() {
                 variant="ghost"
                 size="icon"
                 className="h-7 w-7 shrink-0"
-                aria-label="로그아웃"
+                aria-label={t("logout")}
               >
                 <LogOut size={14} aria-hidden="true" />
               </Button>
@@ -80,58 +104,25 @@ export function Sidebar() {
           />
           <AlertDialogContent size="sm">
             <AlertDialogHeader>
-              <AlertDialogTitle>로그아웃</AlertDialogTitle>
-              <AlertDialogDescription>
-                정말 로그아웃 하시겠어요?
-              </AlertDialogDescription>
+              <AlertDialogTitle>{t("logoutConfirmTitle")}</AlertDialogTitle>
+              <AlertDialogDescription>{t("logoutConfirmDesc")}</AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>취소</AlertDialogCancel>
+              <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
               <AlertDialogAction onClick={() => signOut({ callbackUrl: "/login" })}>
-                로그아웃
+                {t("logout")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </div>
 
-      {/* 네비게이션 */}
-      {NAV_ITEMS.map((item) => {
-        const isActive =
-          item.href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(item.href);
+      {/* 주요 메뉴 */}
+      {MAIN_ITEMS.map((item) => <NavLink key={item.href} {...item} />)}
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-label={item.label}
-            aria-current={isActive ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
-              isActive
-                ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                : "text-sidebar-foreground hover:bg-sidebar-accent/60"
-            )}
-          >
-            <item.icon size={18} aria-hidden="true" />
-            {item.label}
-          </Link>
-        );
-      })}
-
-      {/* 다크모드 토글 */}
-      <div className="mt-auto px-3 pt-4">
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="w-full justify-start gap-2 text-sidebar-foreground"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
-        >
-          {theme === "dark" ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
-          <span className="text-sm">{theme === "dark" ? "라이트 모드" : "다크 모드"}</span>
-        </Button>
+      {/* 부가 메뉴 */}
+      <div className="mt-auto border-t pt-2">
+        {SUB_ITEMS.map((item) => <NavLink key={item.href} {...item} />)}
       </div>
 
       {/* 쿠팡 파트너스 배너 */}
@@ -141,10 +132,8 @@ export function Sidebar() {
             src="https://coupa.ng/cmrXfF"
             width="200"
             height="240"
-            frameBorder="0"
-            scrolling="no"
             referrerPolicy="unsafe-url"
-            style={{ display: "block", width: "100%" }}
+            style={{ display: "block", width: "100%", border: 0, overflow: "hidden" }}
           />
         </div>
       </div>
@@ -154,32 +143,45 @@ export function Sidebar() {
 
 export function MobileNav() {
   const pathname = usePathname();
+  const t = useTranslations("nav");
+
+  const MAIN_ITEMS = [
+    { href: "/dashboard", label: t("home"), icon: Home },
+    { href: "/records", label: t("records"), icon: BookOpen },
+    { href: "/feedback", label: t("feedback"), icon: Sparkles },
+  ] as const;
+
+  const SUB_ITEMS = [
+    { href: "/settings", label: t("settings"), icon: Settings },
+    { href: "/contact", label: t("contact"), icon: Mail },
+  ] as const;
+
+  function MobileNavLink({ href, label, icon: Icon }: { href: string; label: string; icon: React.ElementType }) {
+    const isActive = href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(href);
+    return (
+      <Link
+        href={href}
+        aria-label={label}
+        aria-current={isActive ? "page" : undefined}
+        className={cn(
+          "flex flex-1 flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors",
+          isActive ? "text-primary" : "text-muted-foreground"
+        )}
+      >
+        <Icon size={20} aria-hidden="true" />
+        <span>{label}</span>
+      </Link>
+    );
+  }
 
   return (
     <nav
       aria-label="모바일 하단 메뉴"
       className="fixed bottom-0 left-0 right-0 z-50 flex border-t bg-background md:hidden"
     >
-      {NAV_ITEMS.map((item) => {
-        const isActive =
-          item.href === "/dashboard" ? pathname === "/dashboard" : pathname.startsWith(item.href);
-
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-label={item.label}
-            aria-current={isActive ? "page" : undefined}
-            className={cn(
-              "flex flex-1 flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors",
-              isActive ? "text-primary" : "text-muted-foreground"
-            )}
-          >
-            <item.icon size={20} aria-hidden="true" />
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
+      {MAIN_ITEMS.map((item) => <MobileNavLink key={item.href} {...item} />)}
+      <div className="w-px self-stretch bg-border my-2" aria-hidden="true" />
+      {SUB_ITEMS.map((item) => <MobileNavLink key={item.href} {...item} />)}
     </nav>
   );
 }

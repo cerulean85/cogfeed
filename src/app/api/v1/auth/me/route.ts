@@ -43,10 +43,21 @@ export async function PATCH(req: Request) {
   return apiSuccess({ ok: true });
 }
 
-export async function DELETE() {
+export async function DELETE(req: Request) {
   const user = await getCurrentUser();
   if (!user) {
     return apiError(401, "UNAUTHENTICATED", "로그인이 필요합니다.");
+  }
+
+  const body = await req.json().catch(() => null);
+  const parsed = z.object({ password: z.string().min(1) }).safeParse(body);
+  if (!parsed.success) {
+    return apiError(400, "INVALID_INPUT", "비밀번호를 입력해 주세요.");
+  }
+
+  const valid = await verifyPassword(parsed.data.password, user.passwordHash ?? "");
+  if (!valid) {
+    return apiError(400, "WRONG_PASSWORD", "비밀번호가 올바르지 않습니다.");
   }
 
   await prisma.user.delete({ where: { id: user.id } });

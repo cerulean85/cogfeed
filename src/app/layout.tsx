@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, getLocale } from "next-intl/server";
 import { Providers } from "./providers";
 import "./globals.css";
 
@@ -8,13 +10,16 @@ export const metadata: Metadata = {
   description: "AI가 당신의 기록을 분석해 인지 오류를 진단하고 개인화 피드백을 제공합니다.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="ko" className="h-full antialiased" suppressHydrationWarning>
+    <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <head>
         <Script
           async
@@ -31,7 +36,9 @@ export default function RootLayout({
           >
             본문 바로가기
           </a>
-          <Providers>{children}</Providers>
+          <NextIntlClientProvider messages={messages} locale={locale}>
+            <Providers>{children}</Providers>
+          </NextIntlClientProvider>
         </body>
     </html>
   );
