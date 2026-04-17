@@ -9,6 +9,7 @@ import { parseApiResponse } from "@/shared/lib/client-api";
 import { cn } from "@/shared/lib/utils";
 import { Button, buttonVariants } from "@/shared/ui/button";
 import { Card, CardContent, CardHeader } from "@/shared/ui/card";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -33,6 +34,7 @@ export default function RecordsPage() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<"desc" | "asc">("desc");
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const t = useTranslations("records");
   const tc = useTranslations("common");
 
@@ -47,6 +49,7 @@ export default function RecordsPage() {
   };
 
   const load = useCallback(async (p: number, q: string, s: "desc" | "asc") => {
+    setIsLoading(true);
     try {
       const params = new URLSearchParams({ page: String(p), limit: String(PAGE_SIZE), sort: s, ...(q ? { search: q } : {}) });
       const res = await fetch(`/api/v1/records?${params}`, { cache: "no-store" });
@@ -56,6 +59,8 @@ export default function RecordsPage() {
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : t("loadError"));
+    } finally {
+      setIsLoading(false);
     }
   }, [t]);
 
@@ -106,7 +111,24 @@ export default function RecordsPage() {
 
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
 
-      {records.length === 0 ? (
+      {isLoading ? (
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <li key={i} className="rounded-lg border p-4 space-y-3">
+              <Skeleton className="h-3 w-28" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+              <div className="flex gap-2 pt-1">
+                <Skeleton className="h-8 flex-1" />
+                <Skeleton className="h-8 w-16" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : records.length === 0 ? (
         <Card className="border-dashed">
           <CardContent className="py-12 text-center text-sm text-muted-foreground">
             {search ? t("emptySearch", { search }) : t("empty")}
@@ -156,7 +178,7 @@ export default function RecordsPage() {
         </ul>
       )}
 
-      {meta && meta.totalPages > 1 && (
+      {!isLoading && meta && meta.totalPages > 1 && (
         <div className="flex items-center justify-center gap-2" role="navigation" aria-label={tc("pageNav")}>
           <Button type="button" variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)} aria-label={tc("prevPage")}>{tc("prev")}</Button>
           <span className="text-sm text-muted-foreground tabular-nums">{tc("pageOf", { page, total: meta.totalPages })}</span>

@@ -9,6 +9,7 @@ import { cn } from "@/shared/lib/utils";
 import { parseApiResponse } from "@/shared/lib/client-api";
 import { buttonVariants } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 type RecordDetail = { recordId: string; content: string; analysisStatus: "pending" | "completed" | "failed" | "skipped"; createdAt: string; updatedAt: string };
 type CognitiveErrorSeverity = "low" | "medium" | "high";
@@ -79,7 +80,38 @@ export default function FeedbackPage() {
   }
 
   if (!record || !analysis) {
-    return <div className="text-sm text-muted-foreground">{t("loading")}</div>;
+    return (
+      <div className="mx-auto max-w-2xl space-y-6">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-40" />
+          <Skeleton className="h-4 w-56" />
+        </div>
+        <div className="rounded-lg border p-4 space-y-2">
+          <Skeleton className="h-3 w-16" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-3/4" />
+        </div>
+        <div className="rounded-lg border p-6 space-y-4">
+          <Skeleton className="h-5 w-28" />
+          {Array.from({ length: 2 }).map((_, i) => (
+            <div key={i} className="rounded-lg border p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-5 w-12 rounded-full" />
+              </div>
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-5/6" />
+            </div>
+          ))}
+        </div>
+        <div className="rounded-lg border p-6 space-y-3">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-9 w-20" />
+          <Skeleton className="h-2 w-full rounded-full" />
+        </div>
+      </div>
+    );
   }
 
   return (
