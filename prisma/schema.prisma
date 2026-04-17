@@ -33,12 +33,20 @@ enum AnalysisStatus {
   skipped
 }
 
+enum CognitiveErrorSeverity {
+  low
+  medium
+  high
+}
+
 enum CognitiveErrorType {
   confirmation_bias
   availability_heuristic
   anchoring
   black_and_white_thinking
   overgeneralization
+  emotional_reasoning
+  selective_abstraction
   catastrophizing
 }
 
@@ -119,6 +127,7 @@ model Analysis {
   recordId        String         @unique
   status          AnalysisStatus @default(pending)
   overallFeedback String?        @db.Text
+  clarityScore    Int?
   retryCount      Int            @default(0)
   analyzedAt      DateTime?
   createdAt       DateTime       @default(now())
@@ -129,12 +138,13 @@ model Analysis {
 }
 
 model CognitiveError {
-  id         String             @id @default(uuid())
+  id         String                  @id @default(uuid())
   analysisId String
   type       CognitiveErrorType
-  excerpt    String             @db.Text
-  feedback   String             @db.Text
-  createdAt  DateTime           @default(now())
+  severity   CognitiveErrorSeverity  @default(medium)
+  excerpt    String                  @db.Text
+  feedback   String                  @db.Text
+  createdAt  DateTime                @default(now())
 
   analysis Analysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
 

@@ -9,11 +9,16 @@ type CognitiveErrorType =
   | "anchoring"
   | "black_and_white_thinking"
   | "overgeneralization"
+  | "emotional_reasoning"
+  | "selective_abstraction"
   | "catastrophizing";
+
+type CognitiveErrorSeverity = "low" | "medium" | "high";
 
 export type ApiAnalysisError = {
   type: string;
   label: string;
+  severity: CognitiveErrorSeverity;
   excerpt: string;
   feedback: string;
 };
@@ -24,14 +29,40 @@ type PrismaRecordWithAnalysis = {
     id: string;
     status: AnalysisStatus;
     overallFeedback: string | null;
+    clarityScore: number | null;
     analyzedAt: Date | null;
     cognitiveErrors: Array<{
       type: CognitiveErrorType;
+      severity: CognitiveErrorSeverity;
       excerpt: string;
       feedback: string;
     }>;
   } | null;
 };
+
+export function mapErrorType(type: string): CognitiveErrorType {
+  switch (type) {
+    case "확증 편향":
+      return "confirmation_bias";
+    case "가용성 편향":
+      return "availability_heuristic";
+    case "앵커링 오류":
+      return "anchoring";
+    case "흑백 논리":
+      return "black_and_white_thinking";
+    case "과일반화":
+    case "과잉 일반화":
+      return "overgeneralization";
+    case "감정적 추론":
+      return "emotional_reasoning";
+    case "선택적 추상화":
+      return "selective_abstraction";
+    case "파국화":
+      return "catastrophizing";
+    default:
+      return "confirmation_bias";
+  }
+}
 
 export function createMockAnalysis(content: string): AnalysisResult {
   const normalized = content.toLowerCase();
@@ -78,6 +109,7 @@ export function toApiAnalysis(record: PrismaRecordWithAnalysis) {
       status: "pending" as const,
       cognitiveErrors: [],
       overallFeedback: null,
+      clarityScore: null,
       analyzedAt: null,
     };
   }
@@ -89,6 +121,7 @@ export function toApiAnalysis(record: PrismaRecordWithAnalysis) {
       status: "failed" as const,
       cognitiveErrors: [],
       overallFeedback: null,
+      clarityScore: null,
       analyzedAt: null,
     };
   }
@@ -100,6 +133,7 @@ export function toApiAnalysis(record: PrismaRecordWithAnalysis) {
       status: "skipped" as const,
       cognitiveErrors: [],
       overallFeedback: null,
+      clarityScore: null,
       analyzedAt: null,
     };
   }
@@ -110,12 +144,14 @@ export function toApiAnalysis(record: PrismaRecordWithAnalysis) {
     status: "completed" as const,
     cognitiveErrors: record.analysis.cognitiveErrors.map((error) => toApiPrismaError(error)),
     overallFeedback: record.analysis.overallFeedback ?? null,
+    clarityScore: record.analysis.clarityScore ?? null,
     analyzedAt: record.analysis.analyzedAt?.toISOString() ?? null,
   };
 }
 
 function toApiPrismaError(error: {
   type: CognitiveErrorType;
+  severity: CognitiveErrorSeverity;
   excerpt: string;
   feedback: string;
 }): ApiAnalysisError {
@@ -125,12 +161,15 @@ function toApiPrismaError(error: {
     anchoring: "앵커링 오류",
     black_and_white_thinking: "흑백 논리",
     overgeneralization: "과일반화",
+    emotional_reasoning: "감정적 추론",
+    selective_abstraction: "선택적 추상화",
     catastrophizing: "파국화",
   };
 
   return {
     type: error.type,
     label: labels[error.type],
+    severity: error.severity,
     excerpt: error.excerpt,
     feedback: error.feedback,
   };
