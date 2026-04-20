@@ -7,9 +7,10 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Settings, Sun, Moon, Monitor } from "lucide-react";
+import { Settings, Sun, Moon, Monitor, LogOut, ExternalLink } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 import { Button } from "@/shared/ui/button";
 import { Label } from "@/shared/ui/label";
@@ -33,6 +34,8 @@ type PasswordFormValues = z.infer<typeof passwordSchema>;
 export default function SettingsPage() {
   const router = useRouter();
   const { data: session } = useSession();
+  const email = session?.user?.email ?? "";
+  const initial = email.charAt(0).toUpperCase();
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -128,9 +131,38 @@ export default function SettingsPage() {
 
       <section aria-labelledby="account-info-heading">
         <h2 id="account-info-heading" className="mb-4 text-base font-semibold">{t("accountInfo")}</h2>
-        <div className="rounded-md border px-4 py-3 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{tc("email")}</span>
-          <span className="ml-3">{session?.user?.email ?? "-"}</span>
+        <div className="flex items-center gap-3 rounded-md border bg-background px-3 py-2.5">
+          <div
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-foreground"
+            aria-hidden="true"
+          >
+            {initial}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs text-muted-foreground">{t("email")}</p>
+            <p className="truncate text-sm font-medium" title={email}>{email}</p>
+          </div>
+          <AlertDialog>
+            <AlertDialogTrigger
+              render={
+                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 shrink-0" aria-label={tn("logout")}>
+                  <LogOut size={15} aria-hidden="true" />
+                </Button>
+              }
+            />
+            <AlertDialogContent size="sm">
+              <AlertDialogHeader>
+                <AlertDialogTitle>{tn("logoutConfirmTitle")}</AlertDialogTitle>
+                <AlertDialogDescription>{tn("logoutConfirmDesc")}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{tc("cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={() => signOut({ callbackUrl: "/login" })}>
+                  {tn("logout")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </section>
 
@@ -256,6 +288,33 @@ export default function SettingsPage() {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+      </section>
+
+      <Separator />
+
+      <section aria-labelledby="legal-heading">
+        <h2 id="legal-heading" className="mb-3 text-base font-semibold">{t("legal")}</h2>
+        <div className="space-y-1">
+          <Link
+            href="/terms/service"
+            target="_blank"
+            className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            {t("termsOfService")}
+            <ExternalLink size={14} aria-hidden="true" />
+          </Link>
+          <Link
+            href="/terms/privacy"
+            target="_blank"
+            className="flex items-center justify-between rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          >
+            {t("privacyPolicy")}
+            <ExternalLink size={14} aria-hidden="true" />
+          </Link>
+        </div>
+        <p className="mt-4 px-3 text-xs text-muted-foreground">
+          © {new Date().getFullYear()} CogFeed. All rights reserved.
+        </p>
       </section>
     </div>
   );

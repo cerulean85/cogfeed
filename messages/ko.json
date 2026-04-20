@@ -205,6 +205,7 @@
     "title": "계정 설정",
     "desc": "계정 정보를 관리합니다.",
     "accountInfo": "계정 정보",
+    "email": "이메일",
     "changePassword": "비밀번호 변경",
     "currentPassword": "현재 비밀번호",
     "newPassword": "새 비밀번호",
@@ -221,7 +222,10 @@
     "deleteConfirmDesc": "모든 기록과 분석 데이터가 즉시 삭제되며 복구할 수 없습니다.",
     "deleteAction": "탈퇴",
     "deleting": "탈퇴 중...",
-    "deleteError": "비밀번호가 올바르지 않습니다."
+    "deleteError": "비밀번호가 올바르지 않습니다.",
+    "legal": "법적 고지",
+    "termsOfService": "서비스 이용약관",
+    "privacyPolicy": "개인정보처리방침"
   },
   "footer": {
     "terms": "서비스 이용약관",

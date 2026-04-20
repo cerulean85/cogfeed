@@ -10,7 +10,7 @@ export function Footer({ className }: { className?: string }) {
   const locale = useLocale();
 
   return (
-    <footer className={className}>
+    <footer className={`hidden md:block ${className ?? ""}`}>
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
         <Dialog>
           <DialogTrigger className="underline underline-offset-4 hover:text-foreground">

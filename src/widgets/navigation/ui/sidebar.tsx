@@ -80,7 +80,7 @@ export function Sidebar({ coupangSrc }: { coupangSrc: string }) {
       {/* 사용자 정보 + 로그아웃 */}
       <div className="mb-4 flex items-center gap-2 rounded-md border bg-background px-3 py-2">
         <div
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold text-foreground"
           aria-hidden="true"
         >
           {initial}

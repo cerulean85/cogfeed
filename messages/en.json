@@ -205,6 +205,7 @@
     "title": "Account Settings",
     "desc": "Manage your account information.",
     "accountInfo": "Account Info",
+    "email": "Email",
     "changePassword": "Change Password",
     "currentPassword": "Current password",
     "newPassword": "New password",
@@ -221,7 +222,10 @@
     "deleteConfirmDesc": "All records and analysis data will be immediately and permanently deleted.",
     "deleteAction": "Delete",
     "deleting": "Deleting...",
-    "deleteError": "Incorrect password."
+    "deleteError": "Incorrect password.",
+    "legal": "Legal",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
   },
   "footer": {
     "terms": "Terms of Service",
