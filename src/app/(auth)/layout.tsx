@@ -30,7 +30,7 @@ export default async function AuthLayout({
         className="mb-8 flex items-center gap-2 text-2xl font-bold tracking-tight transition-opacity hover:opacity-80"
         aria-label="CogFeed 홈으로 이동"
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-100 text-violet-500">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-white">
           <Brain size={18} aria-hidden="true" />
         </span>
         CogFeed

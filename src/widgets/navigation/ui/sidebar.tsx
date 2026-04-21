@@ -71,7 +71,7 @@ export function Sidebar({ coupangSrc }: { coupangSrc: string }) {
         className="mb-4 flex items-center gap-2 px-3 text-xl font-bold tracking-tight transition-opacity hover:opacity-80"
         aria-label="CogFeed 대시보드 홈"
       >
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-100 text-violet-500">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-600 text-white">
           <Brain size={16} aria-hidden="true" />
         </span>
         CogFeed

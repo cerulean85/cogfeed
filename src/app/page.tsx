@@ -62,7 +62,7 @@ export default async function HomePage() {
         {/* 서비스 브랜드 */}
         <div className="space-y-3">
           <h1 className="flex items-center justify-center gap-3 text-4xl font-bold tracking-tight">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100 text-violet-500">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 text-white">
               <Brain size={22} aria-hidden="true" />
             </span>
             CogFeed
