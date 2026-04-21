@@ -50,10 +50,14 @@ export const metadata: Metadata = {
   verification: {
     google: "loNSOty856dOFy4duEtSaGM65UCZ0Asu1oXku680W-g",
   },
+  icons: {
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "CogFeed",
+    startupImage: "/icons/apple-touch-icon.png",
   },
   other: {
     "mobile-web-app-capable": "yes",

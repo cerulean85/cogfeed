@@ -55,7 +55,7 @@ export default async function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-4 py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="fixed top-4 right-4">
+      <div className="fixed right-4 top-[calc(1rem+env(safe-area-inset-top))]">
         <LocaleSwitcher />
       </div>
       <div className="w-full max-w-md space-y-8 text-center">
