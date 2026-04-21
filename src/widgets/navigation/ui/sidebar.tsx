@@ -177,7 +177,7 @@ export function MobileNav() {
   return (
     <nav
       aria-label="모바일 하단 메뉴"
-      className="fixed bottom-0 left-0 right-0 z-50 flex border-t bg-background md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 flex border-t bg-background md:hidden pb-[env(safe-area-inset-bottom)]"
     >
       {MAIN_ITEMS.map((item) => <MobileNavLink key={item.href} {...item} />)}
       <div className="w-px self-stretch bg-border my-2" aria-hidden="true" />

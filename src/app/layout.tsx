@@ -1,9 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { Providers } from "./providers";
+import { PwaRegister } from "@/shared/ui/pwa-register";
 import { siteMeta } from "@/shared/config/site";
 import "./globals.css";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#7c3aed",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteMeta.url),
@@ -42,6 +50,14 @@ export const metadata: Metadata = {
   verification: {
     google: "loNSOty856dOFy4duEtSaGM65UCZ0Asu1oXku680W-g",
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "CogFeed",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+  },
 };
 
 export default async function RootLayout({
@@ -66,6 +82,7 @@ export default async function RootLayout({
           <NextIntlClientProvider messages={messages} locale={locale}>
             <Providers>{children}</Providers>
           </NextIntlClientProvider>
+          <PwaRegister />
         </body>
     </html>
   );
