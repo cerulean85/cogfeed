@@ -20,7 +20,7 @@ export default async function AuthLayout({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
       {/* 언어 전환 — 우상단 고정 */}
-      <div className="fixed top-4 right-4">
+      <div className="fixed right-4 top-[calc(1rem+env(safe-area-inset-top))]">
         <LocaleSwitcher />
       </div>
 
