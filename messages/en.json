@@ -24,7 +24,9 @@
     "sortAriaOldest": "Sorted by oldest — switch to newest",
     "prevPage": "Previous page",
     "nextPage": "Next page",
-    "pageNav": "Page navigation"
+    "pageNav": "Page navigation",
+    "skipToContent": "Skip to content",
+    "close": "Close"
   },
   "nav": {
     "home": "Home",
@@ -42,7 +44,10 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "langKo": "한국어",
-    "langEn": "English"
+    "langEn": "English",
+    "mainMenu": "Main menu",
+    "mobileMenu": "Mobile bottom menu",
+    "dashboardHome": "CogFeed dashboard home"
   },
   "landing": {
     "tagline": "AI analyzes your notes to diagnose\ncognitive errors and provide personalized feedback.",
@@ -62,6 +67,11 @@
     "registerTitle": "Create your account",
     "registerDesc": "Enter your email and password to get started.",
     "passwordPlaceholder": "At least 8 characters",
+    "passwordInputPlaceholder": "Enter password",
+    "loginFormAriaLabel": "Login form",
+    "registerFormAriaLabel": "Registration form",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "passwordConfirm": "Confirm password",
     "passwordConfirmPlaceholder": "Re-enter your password",
     "registerButton": "Sign up",
@@ -73,6 +83,8 @@
     "termPrivacy": "[Required] I agree to the Privacy Policy.",
     "termMarketing": "[Optional] I agree to receive marketing emails.",
     "termsRequired": "Please agree to all required items.",
+    "termsListAriaLabel": "Terms list",
+    "homeAriaLabel": "Go to CogFeed home",
     "forgotTitle": "Reset Password",
     "forgotDesc": "Enter your email address and we'll send you a reset link.",
     "forgotButton": "Send reset link",
@@ -89,6 +101,22 @@
     "invalidLink": "Invalid link.",
     "getNewLink": "Get a new reset link",
     "networkError": "A network error occurred. Please try again."
+  },
+  "validation": {
+    "emailRequired": "Please enter your email.",
+    "emailInvalid": "Please enter a valid email address.",
+    "passwordRequired": "Please enter your password.",
+    "passwordMin": "Password must be at least 8 characters.",
+    "passwordMax": "Password is too long.",
+    "passwordConfirmRequired": "Please confirm your password.",
+    "passwordMismatch": "Passwords do not match.",
+    "recordMin": "Please enter at least 20 characters.",
+    "recordMax": "Please enter 500 characters or fewer."
+  },
+  "legal": {
+    "termsTitle": "Terms of Service",
+    "privacyTitle": "Privacy Policy",
+    "backToAgreement": "← Back to terms agreement"
   },
   "onboarding": {
     "step1Title": "Record your thoughts",

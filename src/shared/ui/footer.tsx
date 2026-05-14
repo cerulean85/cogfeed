@@ -7,6 +7,7 @@ import { TermsServiceKo, TermsServiceEn, PrivacyKo, PrivacyEn } from "@/shared/u
 
 export function Footer({ className }: { className?: string }) {
   const t = useTranslations("footer");
+  const tc = useTranslations("common");
   const locale = useLocale();
 
   return (
@@ -19,7 +20,7 @@ export function Footer({ className }: { className?: string }) {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{t("terms")}</DialogTitle>
-              <DialogClose aria-label="닫기"><X size={16} /></DialogClose>
+              <DialogClose aria-label={tc("close")}><X size={16} /></DialogClose>
             </DialogHeader>
             <DialogBody>
               {locale === "en" ? <TermsServiceEn /> : <TermsServiceKo />}
@@ -36,7 +37,7 @@ export function Footer({ className }: { className?: string }) {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{t("privacy")}</DialogTitle>
-              <DialogClose aria-label="닫기"><X size={16} /></DialogClose>
+              <DialogClose aria-label={tc("close")}><X size={16} /></DialogClose>
             </DialogHeader>
             <DialogBody>
               {locale === "en" ? <PrivacyEn /> : <PrivacyKo />}

@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
-import { loginSchema, type LoginFormValues } from "@/features/auth/model/validations";
+import { createLoginSchema, type LoginFormValues } from "@/features/auth/model/validations";
 import { safeCallbackUrl } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -23,6 +23,12 @@ export function LoginForm() {
   const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"));
   const t = useTranslations("auth");
   const tc = useTranslations("common");
+  const tv = useTranslations("validation");
+  const loginSchema = createLoginSchema({
+    emailRequired: tv("emailRequired"),
+    emailInvalid: tv("emailInvalid"),
+    passwordRequired: tv("passwordRequired"),
+  });
 
   const {
     register,
@@ -50,7 +56,7 @@ export function LoginForm() {
   }
 
   return (
-    <form method="post" onSubmit={handleSubmit(onSubmit)} noValidate aria-label="로그인 양식" className="space-y-5">
+    <form method="post" onSubmit={handleSubmit(onSubmit)} noValidate aria-label={t("loginFormAriaLabel")} className="space-y-5">
       {serverError && (
         <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {serverError}
@@ -77,7 +83,7 @@ export function LoginForm() {
         <PasswordInput
           id="password"
           autoComplete="current-password"
-          placeholder="비밀번호 입력"
+          placeholder={t("passwordInputPlaceholder")}
           aria-required="true"
           aria-describedby={errors.password ? "password-error" : undefined}
           aria-invalid={!!errors.password}

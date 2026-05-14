@@ -1,21 +1,22 @@
 "use client";
 
 import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { cn } from "@/shared/lib/utils";
 import { useLocaleSwitch, type AppLocale } from "@/shared/lib/locale";
-
-const LANGS: { value: AppLocale; label: string }[] = [
-  { value: "ko", label: "한국어" },
-  { value: "en", label: "EN" },
-];
 
 export function LocaleSwitcher({ className }: { className?: string }) {
   const locale = useLocale();
   const switchLocale = useLocaleSwitch();
+  const t = useTranslations("nav");
+  const langs: { value: AppLocale; label: string }[] = [
+    { value: "ko", label: t("langKo") },
+    { value: "en", label: t("langEn") },
+  ];
 
   return (
     <div className={cn("flex items-center rounded-md border bg-background p-0.5 gap-0.5", className)}>
-      {LANGS.map(({ value, label }) => (
+      {langs.map(({ value, label }) => (
         <button
           key={value}
           type="button"

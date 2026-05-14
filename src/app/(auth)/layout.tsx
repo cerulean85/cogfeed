@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Brain } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 import { auth } from "@/auth";
 import { Footer } from "@/shared/ui/footer";
@@ -15,6 +16,7 @@ export default async function AuthLayout({
   const session = await auth();
   if (session) redirect("/dashboard");
 
+  const t = await getTranslations("auth");
   const coupangSrc = await getSiteConfig("coupang_iframe_src_2") ?? "https://coupa.ng/cmr68w";
 
   return (
@@ -28,7 +30,7 @@ export default async function AuthLayout({
       <Link
         href="/"
         className="mb-8 flex items-center gap-2 text-2xl font-bold tracking-tight transition-opacity hover:opacity-80"
-        aria-label="CogFeed 홈으로 이동"
+        aria-label={t("homeAriaLabel")}
       >
         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-white">
           <Brain size={18} aria-hidden="true" />

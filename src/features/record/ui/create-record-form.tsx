@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
-import { recordSchema, type RecordFormValues } from "@/features/record/model/validations";
+import { createRecordSchema, type RecordFormValues } from "@/features/record/model/validations";
 import { parseApiResponse } from "@/shared/lib/client-api";
 import { Button } from "@/shared/ui/button";
 import { Label } from "@/shared/ui/label";
@@ -19,6 +19,11 @@ export function CreateRecordForm() {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const t = useTranslations("newRecord");
   const tc = useTranslations("common");
+  const tv = useTranslations("validation");
+  const recordSchema = createRecordSchema({
+    recordMin: tv("recordMin"),
+    recordMax: tv("recordMax"),
+  });
 
   const { control, register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RecordFormValues>({
     resolver: zodResolver(recordSchema),

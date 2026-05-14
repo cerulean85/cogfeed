@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useTranslations } from "next-intl";
 
-import { registerSchema, type RegisterFormValues } from "@/features/auth/model/validations";
+import { createRegisterSchema, type RegisterFormValues } from "@/features/auth/model/validations";
 import { parseApiResponse } from "@/shared/lib/client-api";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -24,6 +24,16 @@ export function RegisterForm() {
   const marketingConsent = searchParams.get("marketing") === "1";
   const t = useTranslations("auth");
   const tc = useTranslations("common");
+  const tv = useTranslations("validation");
+  const registerSchema = createRegisterSchema({
+    emailRequired: tv("emailRequired"),
+    emailInvalid: tv("emailInvalid"),
+    passwordRequired: tv("passwordRequired"),
+    passwordMin: tv("passwordMin"),
+    passwordMax: tv("passwordMax"),
+    passwordConfirmRequired: tv("passwordConfirmRequired"),
+    passwordMismatch: tv("passwordMismatch"),
+  });
 
   const {
     register,
@@ -48,7 +58,7 @@ export function RegisterForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate aria-label="회원가입 양식" className="space-y-5">
+    <form onSubmit={handleSubmit(onSubmit)} noValidate aria-label={t("registerFormAriaLabel")} className="space-y-5">
       {serverError && (
         <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
           {serverError}

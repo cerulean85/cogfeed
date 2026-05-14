@@ -4,14 +4,14 @@ export function TermsServiceKo() {
       <p className="text-xs text-muted-foreground">시행일: 2026년 4월 17일</p>
       <section>
         <h2 className="mb-2 font-semibold text-base">제1조 (목적)</h2>
-        <p className="text-muted-foreground">이 약관은 CogFeed(이하 "서비스")가 제공하는 인지 오류 피드백 서비스의 이용 조건 및 절차, 이용자와 서비스 간의 권리·의무 및 책임 사항을 규정함을 목적으로 합니다.</p>
+        <p className="text-muted-foreground">이 약관은 CogFeed(이하 &quot;서비스&quot;)가 제공하는 인지 오류 피드백 서비스의 이용 조건 및 절차, 이용자와 서비스 간의 권리·의무 및 책임 사항을 규정함을 목적으로 합니다.</p>
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">제2조 (정의)</h2>
         <ul className="space-y-1 text-muted-foreground list-disc pl-5">
-          <li>"서비스"란 CogFeed가 제공하는 AI 기반 인지 오류 분석 및 피드백 웹 서비스를 말합니다.</li>
-          <li>"이용자"란 이 약관에 동의하고 서비스를 이용하는 모든 회원을 말합니다.</li>
-          <li>"기록"이란 이용자가 서비스 내에 입력·저장한 텍스트 데이터를 말합니다.</li>
+          <li>&quot;서비스&quot;란 CogFeed가 제공하는 AI 기반 인지 오류 분석 및 피드백 웹 서비스를 말합니다.</li>
+          <li>&quot;이용자&quot;란 이 약관에 동의하고 서비스를 이용하는 모든 회원을 말합니다.</li>
+          <li>&quot;기록&quot;이란 이용자가 서비스 내에 입력·저장한 텍스트 데이터를 말합니다.</li>
         </ul>
       </section>
       <section>
@@ -59,24 +59,24 @@ export function TermsServiceEn() {
       <p className="text-xs text-muted-foreground">Effective date: April 17, 2026</p>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 1 (Purpose)</h2>
-        <p className="text-muted-foreground">These Terms of Service govern the conditions and procedures for using the cognitive error feedback service provided by CogFeed (the "Service"), as well as the rights, obligations, and responsibilities between users and the Service.</p>
+        <p className="text-muted-foreground">These Terms of Service govern the conditions and procedures for using the cognitive error feedback service provided by CogFeed (the &quot;Service&quot;), as well as the rights, obligations, and responsibilities between users and the Service.</p>
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 2 (Definitions)</h2>
         <ul className="space-y-1 text-muted-foreground list-disc pl-5">
-          <li>"Service" refers to the AI-based cognitive error analysis and feedback web service provided by CogFeed.</li>
-          <li>"User" refers to any member who agrees to these Terms and uses the Service.</li>
-          <li>"Record" refers to text data entered and stored by a user within the Service.</li>
+          <li>&quot;Service&quot; refers to the AI-based cognitive error analysis and feedback web service provided by CogFeed.</li>
+          <li>&quot;User&quot; refers to any member who agrees to these Terms and uses the Service.</li>
+          <li>&quot;Record&quot; refers to text data entered and stored by a user within the Service.</li>
         </ul>
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 3 (Effect and Amendment)</h2>
-        <p className="text-muted-foreground">These Terms take effect upon posting on the Service or notifying users. The Service may amend these Terms for reasonable cause, with at least 7 days' prior notice. If you do not agree to the amended Terms, you may stop using the Service and withdraw your account.</p>
+        <p className="text-muted-foreground">These Terms take effect upon posting on the Service or notifying users. The Service may amend these Terms for reasonable cause, with at least 7 days&apos; prior notice. If you do not agree to the amended Terms, you may stop using the Service and withdraw your account.</p>
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 4 (Use of Service)</h2>
         <ul className="space-y-1 text-muted-foreground list-disc pl-5">
-          <li>Users must provide accurate information upon registration. Any disadvantage arising from false information is the user's responsibility.</li>
+          <li>Users must provide accurate information upon registration. Any disadvantage arising from false information is the user&apos;s responsibility.</li>
           <li>Users are responsible for managing their account credentials (email and password).</li>
         </ul>
       </section>
@@ -87,7 +87,7 @@ export function TermsServiceEn() {
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 6 (User Obligations)</h2>
         <ul className="space-y-1 text-muted-foreground list-disc pl-5">
-          <li>Users must not input content that infringes on others' personal information, copyrights, or reputation.</li>
+          <li>Users must not input content that infringes on others&apos; personal information, copyrights, or reputation.</li>
           <li>Users must not engage in any conduct that disrupts the normal operation of the Service.</li>
           <li>Users must not input or distribute illegal or harmful information.</li>
         </ul>
@@ -98,7 +98,7 @@ export function TermsServiceEn() {
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 8 (Withdrawal and Data Deletion)</h2>
-        <p className="text-muted-foreground">Users may request account withdrawal at any time. Upon withdrawal, the user's records and personal information will be immediately deleted, except where retention is required by applicable law.</p>
+        <p className="text-muted-foreground">Users may request account withdrawal at any time. Upon withdrawal, the user&apos;s records and personal information will be immediately deleted, except where retention is required by applicable law.</p>
       </section>
       <section>
         <h2 className="mb-2 font-semibold text-base">Article 9 (Governing Law and Jurisdiction)</h2>

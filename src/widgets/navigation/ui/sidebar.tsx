@@ -62,14 +62,14 @@ export function Sidebar({ coupangSrc }: { coupangSrc: string }) {
 
   return (
     <nav
-      aria-label="주요 메뉴"
+      aria-label={t("mainMenu")}
       className="hidden h-screen w-56 shrink-0 flex-col gap-1 overflow-y-auto border-r bg-sidebar px-3 py-6 md:sticky md:top-0 md:flex"
     >
       {/* 로고 */}
       <Link
         href="/dashboard"
         className="mb-4 flex items-center gap-2 px-3 text-xl font-bold tracking-tight transition-opacity hover:opacity-80"
-        aria-label="CogFeed 대시보드 홈"
+        aria-label={t("dashboardHome")}
       >
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-violet-600 text-white">
           <Brain size={16} aria-hidden="true" />
@@ -176,7 +176,7 @@ export function MobileNav() {
 
   return (
     <nav
-      aria-label="모바일 하단 메뉴"
+      aria-label={t("mobileMenu")}
       className="fixed bottom-0 left-0 right-0 z-50 flex border-t bg-background md:hidden pb-[env(safe-area-inset-bottom)]"
     >
       {MAIN_ITEMS.map((item) => <MobileNavLink key={item.href} {...item} />)}

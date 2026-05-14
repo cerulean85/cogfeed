@@ -19,6 +19,7 @@ export default function TermsPage() {
   const searchParams = useSearchParams();
   const t = useTranslations("auth");
   const tc = useTranslations("common");
+  const tl = useTranslations("legal");
   const [checked, setChecked] = useState({ "terms-service": false, "terms-privacy": false, "terms-marketing": false });
   const [touched, setTouched] = useState(false);
   const callbackUrl = safeCallbackUrl(searchParams.get("callbackUrl"), "");
@@ -28,12 +29,12 @@ export default function TermsPage() {
     {
       id: "terms-service" as const, label: t("termService"), required: true,
       content: locale === "en" ? <TermsServiceEn /> : <TermsServiceKo />,
-      title: locale === "en" ? "Terms of Service" : "서비스 이용약관",
+      title: tl("termsTitle"),
     },
     {
       id: "terms-privacy" as const, label: t("termPrivacy"), required: true,
       content: locale === "en" ? <PrivacyEn /> : <PrivacyKo />,
-      title: locale === "en" ? "Privacy Policy" : "개인정보처리방침",
+      title: tl("privacyTitle"),
     },
     {
       id: "terms-marketing" as const, label: t("termMarketing"), required: false,
@@ -72,7 +73,7 @@ export default function TermsPage() {
 
         <Separator />
 
-        <ul className="space-y-4" aria-label="약관 목록">
+        <ul className="space-y-4" aria-label={t("termsListAriaLabel")}>
           {TERMS_ITEMS.map((item) => (
             <li key={item.id} className="flex items-start gap-3">
               <Checkbox
@@ -93,7 +94,7 @@ export default function TermsPage() {
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>{item.title}</DialogTitle>
-                        <DialogClose aria-label="닫기"><X size={16} /></DialogClose>
+                        <DialogClose aria-label={tc("close")}><X size={16} /></DialogClose>
                       </DialogHeader>
                       <DialogBody>{item.content}</DialogBody>
                     </DialogContent>

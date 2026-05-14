@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { cn } from "@/shared/lib/utils";
 import { Input } from "@/shared/ui/input";
@@ -11,6 +12,7 @@ const PasswordInput = React.forwardRef<
   Omit<React.ComponentProps<"input">, "type">
 >(({ className, ...props }, ref) => {
   const [visible, setVisible] = React.useState(false);
+  const t = useTranslations("auth");
 
   return (
     <div className="relative">
@@ -23,7 +25,7 @@ const PasswordInput = React.forwardRef<
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}
-        aria-label={visible ? "비밀번호 숨기기" : "비밀번호 보기"}
+        aria-label={visible ? t("hidePassword") : t("showPassword")}
         className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
         tabIndex={-1}
       >
